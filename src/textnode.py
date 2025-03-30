@@ -1,3 +1,4 @@
+from __future__ import annotations
 from enum import Enum
 
 class TextType(Enum):
@@ -10,17 +11,17 @@ class TextType(Enum):
 
 class TextNode:
     
-    def __init__(self, text, text_type, url=None):
-        self.text = text
-        self.text_type = text_type
-        self.url = url
+    def __init__(self, text:str, text_type:TextType, url:str=None) -> None:
+        self.text:str = text
+        self.text_type:TextType = text_type
+        self.url:str = url
 
-    def __eq__(self, other):
+    def __eq__(self, other:TextNode) -> bool:
         return (self.text == other.text and \
                 self.text_type == other.text_type and \
                 self.url == other.url)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"TextNode({self.text}, {self.text_type.value}, {self.url})"
 
 
