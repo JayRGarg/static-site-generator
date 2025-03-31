@@ -30,3 +30,34 @@ def extract_markdown_images(text:str) -> list[tuple[str,str]]:
 def extract_markdown_links(text:str) -> list[tuple[str,str]]:
     return re.findall(r"(?<!!)\[([^\[\]]*)\]\(([^\(\)]*)\)", text)
 
+def split_nodes_image(old_nodes:list[TextNode]) -> list[TextNode]:
+    new_nodes:list[TextNode] = []
+    for node in old_nodes:
+        extracted = extract_markdown_images(node.text)
+        curr_text:str = node.text
+        while extracted:
+            img_alt, img_url = extracted[0]
+            sections: list[str] = curr_text.split(f"![{img_alt}]({img_url})", 1)
+            if sections[0]:#if curr_text does not start with image
+                new_nodes.append(TextNode(sections[0], node.text_type))
+            new_nodes.append(TextNode(img_alt, TextType.IMAGE, img_url))
+            curr_text = sections[1] #if this is empty, then extraction will be empty anyways, next outer loop will iterate
+            extracted = extracted[1:]
+        if curr_text: new_nodes.append(TextNode(curr_text, node.text_type))
+    return new_nodes
+
+def split_nodes_link(old_nodes:list[TextNode]) -> list[TextNode]:
+    new_nodes:list[TextNode] = []
+    for node in old_nodes:
+        extracted = extract_markdown_links(node.text)
+        curr_text:str = node.text
+        while extracted:
+            link_anc, link_url = extracted[0]
+            sections: list[str] = curr_text.split(f"[{link_anc}]({link_url})", 1)
+            if sections[0]:#if curr_text does not start with link
+                new_nodes.append(TextNode(sections[0], node.text_type))
+            new_nodes.append(TextNode(link_anc, TextType.LINK, link_url))
+            curr_text = sections[1] #if this is empty, then extraction will be empty anyways, next outer loop will iterate
+            extracted = extracted[1:]
+        if curr_text: new_nodes.append(TextNode(curr_text, node.text_type))
+    return new_nodes
