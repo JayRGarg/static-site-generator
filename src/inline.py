@@ -1,6 +1,14 @@
 from textnode import TextNode, TextType
 import re
 
+def text_to_textnodes(text:str) -> list[TextNode]:
+    nodes = [TextNode(text, TextType.TEXT)]
+    nodes = split_nodes_delimiter(nodes, "**", TextType.BOLD)
+    nodes = split_nodes_delimiter(nodes, "_", TextType.ITALIC)
+    nodes = split_nodes_delimiter(nodes, "`", TextType.CODE)
+    nodes = split_nodes_image(nodes)
+    nodes = split_nodes_link(nodes)
+    return nodes
 
 def split_nodes_delimiter(old_nodes:list[TextNode], delimiter:str, text_type:TextType) -> list[TextNode]:
     new_nodes:list[TextNode] = []
@@ -10,7 +18,7 @@ def split_nodes_delimiter(old_nodes:list[TextNode], delimiter:str, text_type:Tex
         else:
             sections = node.text.split(delimiter)
             if len(sections) == 0:
-                new_nodes.append(TextNode(node.text, TextType.TEXT))
+                new_nodes.append(TextNode(node.text, TextType.TEXT, node.url))
             elif len(sections) % 2 == 1: #even number of delimiters
                 count = len(sections)
                 while count > 0:
@@ -18,7 +26,7 @@ def split_nodes_delimiter(old_nodes:list[TextNode], delimiter:str, text_type:Tex
                         next_type = TextType.TEXT
                     else:
                         next_type = text_type
-                    if sections[len(sections)-count]!="": new_nodes.append(TextNode(sections[len(sections)-count], next_type))
+                    if sections[len(sections)-count]!="": new_nodes.append(TextNode(sections[len(sections)-count], next_type, node.url))
                     count -= 1
             else:
                 raise Exception(f"Syntax Error: expection a: {delimiter}")
@@ -39,11 +47,11 @@ def split_nodes_image(old_nodes:list[TextNode]) -> list[TextNode]:
             img_alt, img_url = extracted[0]
             sections: list[str] = curr_text.split(f"![{img_alt}]({img_url})", 1)
             if sections[0]:#if curr_text does not start with image
-                new_nodes.append(TextNode(sections[0], node.text_type))
+                new_nodes.append(TextNode(sections[0], node.text_type, node.url))
             new_nodes.append(TextNode(img_alt, TextType.IMAGE, img_url))
             curr_text = sections[1] #if this is empty, then extraction will be empty anyways, next outer loop will iterate
             extracted = extracted[1:]
-        if curr_text: new_nodes.append(TextNode(curr_text, node.text_type))
+        if curr_text: new_nodes.append(TextNode(curr_text, node.text_type, node.url))
     return new_nodes
 
 def split_nodes_link(old_nodes:list[TextNode]) -> list[TextNode]:
@@ -55,9 +63,9 @@ def split_nodes_link(old_nodes:list[TextNode]) -> list[TextNode]:
             link_anc, link_url = extracted[0]
             sections: list[str] = curr_text.split(f"[{link_anc}]({link_url})", 1)
             if sections[0]:#if curr_text does not start with link
-                new_nodes.append(TextNode(sections[0], node.text_type))
+                new_nodes.append(TextNode(sections[0], node.text_type, node.url))
             new_nodes.append(TextNode(link_anc, TextType.LINK, link_url))
             curr_text = sections[1] #if this is empty, then extraction will be empty anyways, next outer loop will iterate
             extracted = extracted[1:]
-        if curr_text: new_nodes.append(TextNode(curr_text, node.text_type))
+        if curr_text: new_nodes.append(TextNode(curr_text, node.text_type, node.url))
     return new_nodes
