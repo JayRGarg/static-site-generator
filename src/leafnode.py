@@ -2,12 +2,12 @@ from htmlnode import HTMLNode
 
 class LeafNode(HTMLNode):
 
-    def __init__(self, tag:str, value:str, props: dict[str,str]|None=None) -> None:
+    def __init__(self, tag:str|None, value:str, props: dict[str,str]|None=None) -> None:
         super().__init__(tag=tag, value=value, children=None, props=props)
 
     def to_html(self) -> str:
-        if not self.value:
-            raise ValueError("Node value does not exist.")
+        if self.value is None:
+            raise ValueError("Node value can not be NoneType.")
         if not self.tag:
             return self.value
         else:
