@@ -70,11 +70,15 @@ This is the same paragraph on a new line
 
     def test_block_to_block_type_code(self):
         cases = [
-                    ("```# This is a code```", BlockType.CODE),
-                    ("```# This is\na \ncode```", BlockType.CODE),
-                    ("`````````", BlockType.CODE),
-                    ("```#not a heading```", BlockType.CODE),
-                    ("```\nasdfasf", BlockType.PARAGRAPH),
+                    ("```\n# This is a code```", BlockType.CODE),
+                    ("```\n# This is\na \ncode```", BlockType.CODE),
+                    ("```\n``````", BlockType.CODE),
+                    ("```\n#not a heading```", BlockType.CODE),
+                    ("```# This is a p```", BlockType.PARAGRAPH),
+                    ("```# This is\na \np```", BlockType.PARAGRAPH),
+                    ("````", BlockType.PARAGRAPH),
+                    ("```#not a heading```", BlockType.PARAGRAPH),
+                    ("```\nasdfasf`", BlockType.PARAGRAPH),
                     ("``````\nasdfasf", BlockType.PARAGRAPH),
                 ]
         for input, expected in cases:

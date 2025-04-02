@@ -18,7 +18,7 @@ class BlockType(Enum):
 
 def block_to_block_type(block_md:str) -> BlockType:
     heading_pattern = r"^#{1,6} [^\s].*$"
-    code_pattern = r"^```.*?```$"
+    code_pattern = r"^```\n(.*?)```$"
     quote_line_pattern = r"^>.*$"
     uo_list_line_pattern = r"^- .*$"
     lines = block_md.split('\n')

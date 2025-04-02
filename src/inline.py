@@ -29,7 +29,7 @@ def split_nodes_delimiter(old_nodes:list[TextNode], delimiter:str, text_type:Tex
                     if sections[len(sections)-count]!="": new_nodes.append(TextNode(sections[len(sections)-count], next_type, node.url))
                     count -= 1
             else:
-                raise Exception(f"Syntax Error: expection a: {delimiter}")
+                raise Exception(f"Syntax Error: expecting a: {delimiter}")
     return new_nodes
 
 def extract_markdown_images(text:str) -> list[tuple[str,str]]:
