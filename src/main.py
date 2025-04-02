@@ -1,6 +1,19 @@
 from textnode import TextType, TextNode
+from markdown import markdown_to_html_node, extract_title
 import os
 import shutil
+
+def main():
+
+    root = "/Users/jayrgarg/projects/static-site-generator"
+    static = f"{root}/static"
+    public = f"{root}/public"
+    index_md = f"{root}/content/index.md"
+    template = f"{root}/template.html"
+    destination = f"{root}/public/index.html"
+
+    refresh(static, public)
+    generate_page(index_md, template, destination)
 
 def refresh(source:str, destination:str):
 
@@ -28,14 +41,25 @@ def refresh(source:str, destination:str):
                 copy_files(src_path, dst_path)
         return
     copy_files(source, destination)
+
+def generate_page(from_path:str, template_path:str, dest_path:str) -> None:
+    print(f"Generating page from {from_path} to {dest_path} using {template_path}")
+    with open(from_path, 'r') as from_file:
+        from_txt = from_file.read()
+
+    with open(template_path, 'r') as template_file:
+        template_txt = template_file.read()
+
+    title_str = extract_title(from_txt)
+    content_str = markdown_to_html_node(from_txt).to_html()
+
+    full_page_str = template_txt.replace("{{ Title }}", title_str).replace("{{ Content }}", content_str)
+
+    with open(dest_path, 'w') as dest_file:
+        dest_file.write(full_page_str)
     
+    return
 
-
-def main():
-    node = TextNode("example text", TextType.LINK, "http://www.boot.dev")
-    print(node)
-
-    refresh("/Users/jayrgarg/projects/static-site-generator/static", "/Users/jayrgarg/projects/static-site-generator/public")
 
 if __name__ == "__main__":
     main()
