@@ -5,7 +5,7 @@ from leafnode import LeafNode
 from parentnode import ParentNode
 from textnode import TextNode, TextType, text_node_to_html_node
 from inline import split_nodes_delimiter, extract_markdown_images, extract_markdown_links, split_nodes_image, split_nodes_link, text_to_textnodes
-from markdown import markdown_to_html_node
+from markdown import markdown_to_html_node, extract_title
 
 class TestMarkdown(unittest.TestCase):
     def test_paragraphs(self):
@@ -150,6 +150,21 @@ the **same** even with inline stuff
             html,
             "<div><pre><code>This is text that _should_ remain\nthe **same** even with inline stuff\n</code></pre></div>",
         )
+
+    def test_extract_title(self):
+        mds = ["# title", "## hi\n# title2 #"]
+        titles = list(map(extract_title, mds))
+        self.assertEqual(
+            titles,
+            [
+                "title",
+                "title2 #"
+            ],
+        )
+        with self.assertRaises(Exception):
+            extract_title("#faketitle")
+        with self.assertRaises(Exception):
+            extract_title("## faketitle")
 
 if __name__ == "__main__":
     _ = unittest.main()

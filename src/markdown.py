@@ -82,3 +82,10 @@ def get_heading_text_tag(block:str) -> tuple[str, str]:
     else:
         raise Exception("Improper Heading Format")
 
+def extract_title(markdown:str) -> str:
+    lines = markdown.split('\n')
+    for line in lines:
+        if line.startswith("# "):
+            return line[2:].strip()
+    raise Exception("No H1 ('#') Header Included!")
+
