@@ -8,12 +8,12 @@ def main():
     root = "/Users/jayrgarg/projects/static-site-generator"
     static = f"{root}/static"
     public = f"{root}/public"
-    index_md = f"{root}/content/index.md"
+    content_dir = f"{root}/content"
     template = f"{root}/template.html"
-    destination = f"{root}/public/index.html"
+    destination = f"{root}/public"
 
     refresh(static, public)
-    generate_page(index_md, template, destination)
+    generate_pages_recursive(content_dir, template, destination)
 
 def refresh(source:str, destination:str):
 
@@ -58,6 +58,25 @@ def generate_page(from_path:str, template_path:str, dest_path:str) -> None:
     with open(dest_path, 'w') as dest_file:
         dest_file.write(full_page_str)
     
+    return
+
+def generate_pages_recursive(dir_path_content:str, template_path:str, dest_dir_path:str) -> None:
+
+    assert os.path.exists(dir_path_content), f"Source directory missing: {dir_path_content}"
+    if not os.path.exists(dest_dir_path):
+        print(f"Creating Destination Content Directory: {dest_dir_path}")
+        os.mkdir(dest_dir_path)
+
+    contents = os.listdir(dir_path_content)
+    for content in contents:
+        src_path = f"{dir_path_content}/{content}"
+        dst_path = f"{dest_dir_path}/{content}"
+        if os.path.isfile(src_path):
+            if src_path.endswith('.md'):
+                dst_path = dst_path[:-2] + "html" #replacing md with html extension
+                generate_page(src_path, template_path, dst_path)
+        else:
+            generate_pages_recursive(src_path, template_path, dst_path)
     return
 
 
