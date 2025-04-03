@@ -2,18 +2,21 @@ from textnode import TextType, TextNode
 from markdown import markdown_to_html_node, extract_title
 import os
 import shutil
+import sys
 
 def main():
 
-    root = "/Users/jayrgarg/projects/static-site-generator"
+    basepath = sys.argv[1] if len(sys.argv)>1 else "/"
+    root = os.getcwd()
+    print(f"ROOT: {root}")
     static = f"{root}/static"
-    public = f"{root}/public"
+    public = f"{root}/docs"
     content_dir = f"{root}/content"
     template = f"{root}/template.html"
-    destination = f"{root}/public"
+    destination = f"{root}/docs"
 
     refresh(static, public)
-    generate_pages_recursive(content_dir, template, destination)
+    generate_pages_recursive(content_dir, template, destination, basepath)
 
 def refresh(source:str, destination:str):
 
@@ -42,7 +45,7 @@ def refresh(source:str, destination:str):
         return
     copy_files(source, destination)
 
-def generate_page(from_path:str, template_path:str, dest_path:str) -> None:
+def generate_page(from_path:str, template_path:str, dest_path:str, basepath:str) -> None:
     print(f"Generating page from {from_path} to {dest_path} using {template_path}")
     with open(from_path, 'r') as from_file:
         from_txt = from_file.read()
@@ -54,13 +57,14 @@ def generate_page(from_path:str, template_path:str, dest_path:str) -> None:
     content_str = markdown_to_html_node(from_txt).to_html()
 
     full_page_str = template_txt.replace("{{ Title }}", title_str).replace("{{ Content }}", content_str)
+    full_page_str = full_page_str.replace('href="/', f'href="{basepath}').replace('src="/', f'src="{basepath}')
 
     with open(dest_path, 'w') as dest_file:
-        dest_file.write(full_page_str)
+        _ =dest_file.write(full_page_str)
     
     return
 
-def generate_pages_recursive(dir_path_content:str, template_path:str, dest_dir_path:str) -> None:
+def generate_pages_recursive(dir_path_content:str, template_path:str, dest_dir_path:str, basepath:str) -> None:
 
     assert os.path.exists(dir_path_content), f"Source directory missing: {dir_path_content}"
     if not os.path.exists(dest_dir_path):
@@ -74,9 +78,9 @@ def generate_pages_recursive(dir_path_content:str, template_path:str, dest_dir_p
         if os.path.isfile(src_path):
             if src_path.endswith('.md'):
                 dst_path = dst_path[:-2] + "html" #replacing md with html extension
-                generate_page(src_path, template_path, dst_path)
+                generate_page(src_path, template_path, dst_path, basepath)
         else:
-            generate_pages_recursive(src_path, template_path, dst_path)
+            generate_pages_recursive(src_path, template_path, dst_path, basepath)
     return
 
 

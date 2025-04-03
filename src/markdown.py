@@ -9,7 +9,7 @@ from inline import text_to_textnodes
 
 
 
-def markdown_to_html_node(md:str) -> HTMLNode:
+def markdown_to_html_node(md:str) -> ParentNode:
 
     blocks:list[str] = markdown_to_blocks(md)
     children:list[HTMLNode] = list(map(block_to_node, blocks))
