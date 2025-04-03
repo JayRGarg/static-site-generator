@@ -1,17 +1,17 @@
 body {
-  background-color: #1f1c25;
-  color: #f0e6d1;
-  font-family: "Luminari", "Georgia", serif;
-  line-height: 1.7;
+  background-color: #f4f1de; /* Light beige, earthy */
+  color: #3d405b; /* Dark grayish-blue, grounded */
+  font-family: "Merriweather", "Georgia", serif; /* Elegant serif with good readability */
+  line-height: 1.8; /* Slightly increased for better reading flow */
   margin: 0;
-  padding: 20px;
-  max-width: 800px;
+  padding: 30px; /* Increased padding for more whitespace */
+  max-width: 850px; /* Slightly wider for comfortable reading */
   margin-left: auto;
   margin-right: auto;
 }
 
 b {
-  font-weight: 900;
+  font-weight: 700; /* Slightly less intense bold */
 }
 
 h1,
@@ -20,52 +20,55 @@ h3,
 h4,
 h5,
 h6 {
-  color: #dda15e;
-  margin-top: 24px;
-  margin-bottom: 16px;
-  text-shadow: 2px 2px 4px #000;
+  color: #81b29a; /* Soft teal/green, nature-inspired */
+  margin-top: 30px;
+  margin-bottom: 18px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.15); /* Subtler text shadow */
 }
 
 h1 {
-  font-size: 2.5em;
+  font-size: 2.7em;
 }
 
 h2 {
-  font-size: 2em;
+  font-size: 2.2em;
 }
 
 h3 {
-  font-size: 1.5em;
+  font-size: 1.7em;
 }
 
 h4,
 h5,
 h6 {
-  font-size: 1.2em;
+  font-size: 1.3em;
 }
 
 a {
-  color: #e0a96d;
+  color: #a8dadc; /* Light blue, fresh */
   text-decoration: none;
-  border-bottom: 2px solid #e0a96d;
+  border-bottom: 1px solid #e76f51; /* Muted reddish-orange underline */
+  transition: color 0.3s ease, border-bottom-color 0.3s ease; /* Smooth transition */
 }
 
 a:hover {
-  color: #f4a261;
-  border-color: #f4a261;
+  color: #e76f51; /* Muted reddish-orange on hover */
+  border-color: #e76f51;
 }
 
 ul,
 ol {
-  padding-left: 30px;
+  padding-left: 35px; /* Slightly more indent */
+  margin-bottom: 1em;
 }
 
 code {
-  background-color: #3c3c42;
-  border-radius: 6px;
-  color: #e9c46a;
-  padding: 0.4em 0.6em;
-  font-family: "Courier New", monospace;
+  background-color: #e0fbfc; /* Very light cyan, subtle */
+  border-radius: 4px;
+  color: #4a4e69; /* Dark grayish-purple, professional */
+  padding: 0.3em 0.5em;
+  font-family: "Consolas", monospace; /* More modern monospace font */
+  border: 1px solid #e76f51; /* Muted reddish-orange border */
 }
 
 pre code {
@@ -73,58 +76,60 @@ pre code {
 }
 
 pre {
-  background-color: #3c3c42;
-  border-radius: 6px;
-  padding: 1em;
+  background-color: #e0fbfc; /* Same as inline code */
+  border-radius: 4px;
+  padding: 1.2em;
   overflow: auto;
-  box-shadow: 2px 2px 6px #000;
+  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.1); /* Softer shadow */
+  border: 1px solid #e76f51; /* Muted reddish-orange border */
 }
 
 blockquote {
-  background-color: #2e2c35;
-  border-left: 4px solid #8d99ae;
-  padding-left: 2em;
+  background-color: #f9f9f9; /* Very light gray */
+  border-left: 5px solid #e76f51; /* Muted reddish-orange, nature accent */
+  padding-left: 2.2em;
   margin-left: 0;
-  padding-top: 0.5em;
-  padding-bottom: 0.5em;
-  padding-right: 0.5em;
-  color: #ddd;
+  padding-top: 0.7em;
+  padding-bottom: 0.7em;
+  padding-right: 0.7em;
+  color: #525252; /* Medium gray */
   font-style: italic;
+  border-radius: 2px;
 }
 
 img {
   max-width: 100%;
   height: auto;
-  border-radius: 6px;
-  border: 3px solid #3c3c42;
-  box-shadow: 3px 3px 6px #000;
+  border-radius: 4px;
+  border: 2px solid #e76f51; /* Muted reddish-orange border for images */
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1); /* Softer shadow */
 }
 
 ::-webkit-scrollbar {
-  width: 12px;
-  height: 12px;
+  width: 10px;
+  height: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #1f1c25;
-  border-radius: 6px;
+  background: #f4f1de; /* Matches body background */
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #3c3c42;
-  border-radius: 6px;
-  border: 3px solid #1f1c25;
+  background-color: #a8dadc; /* Light blue accent */
+  border-radius: 4px;
+  border: 2px solid #f4f1de; /* Matches track background */
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background-color: #5a5466;
+  background-color: #e76f51; /* Muted reddish-orange on hover */
 }
 
 * {
   scrollbar-width: thin;
-  scrollbar-color: #3c3c42 #1f1c25;
+  scrollbar-color: #a8dadc #f4f1de; /* Matches webkit scrollbar */
 }
 
 ::-webkit-scrollbar-corner {
-  background: #1f1c25;
+  background: #f4f1de;
 }
